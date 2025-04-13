@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Reviews - Sultan's Dine</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body class="review-page">
+    <header>
+        <h1>Customer Reviews</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="reviews">
+        <h2>What Our Customers Say</h2>
+        <div id="review-list"></div>
+    </section>
+
+    <section class="submit-review">
+        <h2>Leave a Review</h2>
+        <form id="review-form">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required />
+
+            <label for="review">Your Review:</label>
+            <textarea id="review" name="review" rows="5" required></textarea>
+
+            <input type="submit" value="Submit Review" />
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Sultan's Dine | All Rights Reserved</p>
+    </footer>
+
+    <script>
+        // Load reviews from localStorage
+        const loadReviews = () => {
+            const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+            const reviewList = document.getElementById('review-list');
+            reviewList.innerHTML = '';
+            reviews.forEach(review => {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.classList.add('review');
+                reviewDiv.innerHTML = `<p><strong>${review.name}:</strong> ${review.review}</p>`;
+                reviewList.appendChild(reviewDiv);
+            });
+        };
+
+        // Save review to localStorage
+        const saveReview = (name, review) => {
+            const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+            reviews.push({ name, review });
+            localStorage.setItem('reviews', JSON.stringify(reviews));
+            loadReviews();
+        };
+
+        // Handle form submission
+        document.getElementById('review-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const review = document.getElementById('review').value;
+            saveReview(name, review);
+            document.getElementById('review-form').reset();
+        });
+
+        // Initial load of reviews
+        loadReviews();
+    </script>
+</body>
+</html>
